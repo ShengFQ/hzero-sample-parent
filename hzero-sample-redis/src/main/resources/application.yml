@@ -2,9 +2,9 @@ spring:
   application:
     name: hzero-redis-sample
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://db.hzero.org:3306/hzero_demo?useUnicode=true&characterEncoding=utf-8&useSSL=false}
-    username: ${SPRING_DATASOURCE_USERNAME:hzero}
-    password: ${SPRING_DATASOURCE_PASSWORD:hzero}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/hzero_demo?useUnicode=true&characterEncoding=utf-8&useSSL=false}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:1qazXSW@}
     hikari:
       # \u8FDE\u63A5\u6C60\u6700\u5C0F\u7A7A\u95F2\u8FDE\u63A5\u6570
       minimum-idle: ${SPRING_DATASOURCE_MINIMUM_IDLE:20}
@@ -13,7 +13,7 @@ spring:
       # \u7B49\u5F85\u8FDE\u63A5\u6C60\u5206\u914D\u8FDE\u63A5\u7684\u6700\u5927\u65F6\u957F\uFF08\u6BEB\u79D2\uFF09
       connection-timeout: ${SPRING_DATASOURCE_CONNECTION_TIMEOUT:30000}
   redis:
-    host: ${SPRING_REDIS_HOST:redis.hzero.org}
+    host: ${SPRING_REDIS_HOST:localhost}
     port: ${SPRING_REDIS_PORT:6379}
     database: ${SPRING_REDIS_DATABASE:1}
     jedis:
@@ -27,6 +27,7 @@ spring:
         # \u5F53\u8D44\u6E90\u6C60\u8FDE\u63A5\u7528\u5C3D\u540E\uFF0C\u8C03\u7528\u8005\u7684\u6700\u5927\u7B49\u5F85\u65F6\u95F4(\u5355\u4F4D\u4E3A\u6BEB\u79D2)
         # \u9ED8\u8BA4 -1 \u8868\u793A\u6C38\u4E0D\u8D85\u65F6\uFF0C\u8BBE\u7F6E5\u79D2
         max-wait: ${SPRING_REDIS_POOL_MAX_WAIT:5000}
+    password: 1qazXSW@
 
 server:
   undertow:
@@ -92,7 +93,8 @@ hzero:
   #\u5F00\u542Fredis CacheValue\u529F\u80FD
   cache-value:
     enable: true
-
+  captcha:
+    enable: true
 logging:
   level:
     org.apache.ibatis: ${LOG_LEVEL:info}

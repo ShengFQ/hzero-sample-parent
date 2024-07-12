@@ -13,6 +13,7 @@ import org.hzero.sample.api.dto.UserCacheVO;
 import org.hzero.sample.app.service.DemoCacheValueService;
 import org.hzero.sample.infra.constant.RedisPrefixConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.util.Assert;
  *
  * @author zifeng.ding@hand-china.com 2020/01/19 15:59
  */
+@Component
 public class DemoRedis {
     @Autowired
     private RedisHelper redisHelper;
@@ -46,7 +48,7 @@ public class DemoRedis {
         //获取缓存值转化指定类型
         string = redisHelper.strGet(RedisPrefixConstants.STRING_KEY + "str", String.class);
         //删除缓存
-        redisHelper.delKey(RedisPrefixConstants.STRING_KEY + "str");
+      //  redisHelper.delKey(RedisPrefixConstants.STRING_KEY + "str");
     }
 
     /**
@@ -64,7 +66,7 @@ public class DemoRedis {
         //批量插入缓存值
         redisHelper.hshPutAll(RedisPrefixConstants.HASH_KEY + "hsh", map);
         //删除缓存值
-        redisHelper.hshDelete(RedisPrefixConstants.HASH_KEY + "hsh", "1", "2");
+      //  redisHelper.hshDelete(RedisPrefixConstants.HASH_KEY + "hsh", "1", "2");
         String hshGet = redisHelper.hshGet(RedisPrefixConstants.HASH_KEY + "hsh", "3");
     }
 
@@ -91,7 +93,7 @@ public class DemoRedis {
         //获取范围内缓存值
         List<String> lstRange = redisHelper.lstRange(RedisPrefixConstants.LIST_KEY + "lst", 0, 1);
         //移除列表中与value相等的元素，移除数量为index值，index大于0 从表头开始移除，否则从表尾开始
-        Long lstRemove = redisHelper.lstRemove(RedisPrefixConstants.LIST_KEY + "lst", 1, "lst-1");
+       // Long lstRemove = redisHelper.lstRemove(RedisPrefixConstants.LIST_KEY + "lst", 1, "lst-1");
     }
 
     /**
@@ -104,7 +106,7 @@ public class DemoRedis {
         //获取set元素
         Set<String> members = redisHelper.setMembers(RedisPrefixConstants.SET_KEY + "set");
         //删除set元素
-        redisHelper.setDel(RedisPrefixConstants.SET_KEY + "set", "1");
+        //redisHelper.setDel(RedisPrefixConstants.SET_KEY + "set", "1");
         //获取差集
         Set<String> difference = redisHelper.setDifference(RedisPrefixConstants.SET_KEY + "set", RedisPrefixConstants.SET_KEY + "set1");
         //获取交集
@@ -136,7 +138,7 @@ public class DemoRedis {
         //切换至db2
         redisHelper.setCurrentDatabase(2);
         //清除当前操作 database
-        redisHelper.clearCurrentDatabase();
+     //   redisHelper.clearCurrentDatabase();
     }
 
     /**

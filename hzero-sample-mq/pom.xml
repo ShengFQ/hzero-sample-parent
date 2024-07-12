@@ -7,33 +7,30 @@
         <artifactId>hzero-sample-parent</artifactId>
         <version>1.3.0-SNAPSHOT</version>
     </parent>
-    <artifactId>hzero-sample-redis</artifactId>
+    <name>hzero-sample-mq</name>
     <version>0.0.1-SNAPSHOT</version>
-    <description>redis示例程序</description>
-
+    <description>分布式锁示例程序</description>
+    <groupId>org.hzero.sample</groupId>
+    <artifactId>hzero-sample-mq</artifactId>
     <properties>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-boot.version>2.6.13</spring-boot.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.hzero.starter</groupId>
-            <artifactId>hzero-starter-core</artifactId>
+            <artifactId>hzero-starter-lock</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.hzero.starter</groupId>
-            <artifactId>hzero-starter-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hzero.boot</groupId>
-            <artifactId>hzero-boot-message</artifactId>
-        </dependency>
-
-        <!-- spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,18 +46,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <optional>true</optional>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -71,5 +56,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

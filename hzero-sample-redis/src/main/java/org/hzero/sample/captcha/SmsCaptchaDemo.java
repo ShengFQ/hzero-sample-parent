@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,14 +30,14 @@ import org.hzero.core.util.Results;
 @Controller
 public class SmsCaptchaDemo {
 
-    private final CaptchaMessageHelper captchaMessageHelper;
-    private final MessageClient messageClient;
+    private  CaptchaMessageHelper captchaMessageHelper;
+    private  MessageClient messageClient;
 
     // 消息模板代码，在消息发送配置中维护
     private static final String MSG_TEMPLATE = "DEMO.MSG_TEMPLATE";
 
     private static final String CACHE_PREFIX = "demo";
-
+    @Autowired
     public SmsCaptchaDemo(CaptchaMessageHelper captchaMessageHelper, MessageClient messageClient) {
         this.captchaMessageHelper = captchaMessageHelper;
         this.messageClient = messageClient;
@@ -110,7 +111,7 @@ public class SmsCaptchaDemo {
         }
     }
 
-    @GetMapping("/captcha/validate/number")
+    @GetMapping("/captcha/validate/number1")
     @ResponseBody
     public void validateWithNumber(String captchaKey, String captcha, String phoneOrEmail) {
         // 1.验证验证码，第三个参数传入获取验证码的手机号或邮箱号，是否一致
@@ -126,7 +127,7 @@ public class SmsCaptchaDemo {
     /**
      * 分步骤验证
      */
-    @GetMapping("/captcha/validate/number")
+    @GetMapping("/captcha/validate/number2")
     @ResponseBody
     public void validateWithNumber(String captchaKey, String captcha) {
         // 1. 第一步用户获取验证码，比如可调用 createMobileCaptcha 接口
