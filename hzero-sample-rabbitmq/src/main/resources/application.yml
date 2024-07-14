@@ -7,5 +7,12 @@ spring:
   rabbitmq:
     host: 127.0.0.1
     port: 5672
+    virtualHost: /
     username: admin
     password: 1qazXSW@
+    listener:
+      direct:
+        acknowledge-mode: auto
+      simple:
+        acknowledge-mode: auto
+        prefetch: 1

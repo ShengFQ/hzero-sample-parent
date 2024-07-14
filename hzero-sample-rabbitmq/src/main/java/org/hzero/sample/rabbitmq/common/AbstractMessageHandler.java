@@ -1,12 +1,14 @@
-package org.hzero.sample.rabbitmq.app.service;
+package org.hzero.sample.rabbitmq.common;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.hzero.core.exception.OptimisticLockException;
 import org.hzero.core.message.MessageAccessor;
+import org.hzero.sample.rabbitmq.config.MsgConstants;
 import org.springframework.amqp.core.Message;
 
 import com.rabbitmq.client.Channel;
@@ -24,14 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
- * 消息处理类
+ * 消息接收会话信息解码
  * </p>
- *
- * @author gw_zhoujp@dealersany.com.cn 2021-12-22 20:35
+ * @author shengfq
  */
 @Slf4j
-public abstract class AbstractMessageHandlers implements MessageHandler {
-    private AbstractMessageHandlers() {}
+public abstract class AbstractMessageHandler implements MessageHandler {
 
     public static void handleMessage(Message msg, Map<String, Object> headers, Channel channel, Consumer<String> fn) {
         String consumerQueue = msg.getMessageProperties().getConsumerQueue();
@@ -61,7 +61,7 @@ public abstract class AbstractMessageHandlers implements MessageHandler {
      *
      * { "language":"zh_CN","userId":47,
      * "organizationId":3,"realName":"erp接口测试用户","tenantId":3,"username":"erp-int"
-     * "additionInfo":{"facility_name":"泵送制造工厂","facility_no":"5802","facility_id":251391029288880018} }
+     * "additionInfo":{"facility_name":"xxx","facility_no":"xxx","facility_id":xxx} }
      *
      * @param msg
      * @param headers
@@ -71,14 +71,14 @@ public abstract class AbstractMessageHandlers implements MessageHandler {
     public static void handleWithUser(Message msg, Map<String, Object> headers, Channel channel, Consumer<String> fn) {
         try {
             // 生产执行发出的mq消息头带有用户会话信息 切勿用于其他系统、模块的mq消息处理
-            Object userDetails = headers.get(MeBaseConstants.USER_DETAILS_KEY);
-            if (ObjectUtil.isNull(userDetails)) {
+            Object userDetails = headers.get(MsgConstants.USER_DETAILS_KEY);
+            if (Objects.isNull(userDetails)) {
                 throw new CommonException("MQ消息头获取用户会话信息失败！！！");
             }
             JSONObject jsonObject = JSONUtil.parseObj(userDetails);
             log.trace("设置用户会话信息，传入JSONObject信息: {}", jsonObject);
 
-            CustomUserDetails details = new CustomUserDetails(jsonObject.getStr("username"), MeBaseConstants.DEFAULT);
+            CustomUserDetails details = new CustomUserDetails(jsonObject.getStr("username"), MsgConstants.DEFAULT);
             details.setTenantId(jsonObject.getLong("tenantId"));
             details.setUserId(jsonObject.getLong("userId"));
             details.setOrganizationId(jsonObject.getLong("organizationId"));
@@ -119,14 +119,14 @@ public abstract class AbstractMessageHandlers implements MessageHandler {
 
         try {
             // 生产执行发出的mq消息头带有用户会话信息 切勿用于其他系统、模块的mq消息处理
-            Object userDetails = headers.get(MeBaseConstants.USER_DETAILS_KEY);
+            Object userDetails = headers.get(MsgConstants.USER_DETAILS_KEY);
             if (ObjectUtil.isNull(userDetails)) {
                 throw new CommonException("MQ消息头获取用户会话信息失败！！！");
             }
             JSONObject jsonObject = JSONUtil.parseObj(userDetails);
             log.trace("设置用户会话信息，传入JSONObject信息: {}", jsonObject);
 
-            CustomUserDetails details = new CustomUserDetails(jsonObject.getStr("username"), MeBaseConstants.DEFAULT);
+            CustomUserDetails details = new CustomUserDetails(jsonObject.getStr("username"), MsgConstants.DEFAULT);
             details.setTenantId(jsonObject.getLong("tenantId"));
             details.setUserId(jsonObject.getLong("userId"));
             details.setOrganizationId(jsonObject.getLong("organizationId"));

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
+ * 初始化一个direct Exchange的队列连接
  * ClassName: DirectRabbitConfig
  * Description: direct exchange init
  *
@@ -28,27 +29,20 @@ public class DirectRabbitConfig {
         //   return new Queue("TestDirectQueue",true,true,false);
 
         //一般设置一下队列的持久化就好,其余两个就是默认false
-        return new Queue("TestDirectQueue",true);
+        return new Queue(MsgConstants.QUEUE_NAME_EXAMPLE,true);
     }
 
     //Direct交换机 起名：TestDirectExchange
     @Bean
     DirectExchange TestDirectExchange() {
         //  return new DirectExchange("TestDirectExchange",true,true);
-        return new DirectExchange("TestDirectExchange",true,false);
+        return new DirectExchange(MsgConstants.EXCHANGE_NAME_EXAMPLE,true,false);
     }
 
     //绑定  将队列和交换机绑定, 并设置用于匹配键：TestDirectRouting
     @Bean
     Binding bindingDirect() {
-        return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with("TestDirectRouting");
-    }
-
-
-
-    @Bean
-    DirectExchange lonelyDirectExchange() {
-        return new DirectExchange("lonelyDirectExchange");
+        return BindingBuilder.bind(TestDirectQueue()).to(TestDirectExchange()).with(MsgConstants.DIRECT_ROUTING_KEY_EXAMPLE);
     }
 
 }
