@@ -16,3 +16,16 @@ spring:
       simple:
         acknowledge-mode: auto
         prefetch: 1
+
+hzero:
+  resource:
+    # 匹配的资源才会解析JwtToken便于得到UserDetails
+    pattern: ${HZERO_RESOURCE_PATTERN:/v1/*,/hzero/*,/hmsg/v1/*,/hmsg/hzero/*}
+    skip-path: ${HZERO_SKIP_PATH:/v2/*/*}
+
+logging:
+  level:
+    org.apache.ibatis: ${LOG_LEVEL:info}
+    io.choerodon: ${LOG_LEVEL:info}
+    org.hzero: ${LOG_LEVEL:info}
+    org.hzero.boot.platform.lov: ${LOG_LEVEL:error}

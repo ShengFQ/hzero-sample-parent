@@ -1,10 +1,13 @@
 package org.hzero.sample.rabbitmq.api;
 
+import io.choerodon.swagger.annotation.Permission;
+import org.hzero.core.base.BaseConstants;
 import org.hzero.sample.rabbitmq.app.service.DirectMessageSender;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -12,11 +15,14 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @Author : JCccc
- * @CreateTime : 2019/9/3
- * @Description :
+ * @Author : shengfq
+ * @CreateTime : 2024-07-14
+ * @Description : 发送消息
  **/
-@RestController
+
+@RestController("sendMessageController.v2")
+@RequestMapping("/v2/rabbitmq")
+@SuppressWarnings("all")
 public class SendMessageController {
 
     @Autowired
@@ -32,7 +38,7 @@ public class SendMessageController {
         map.put("messageData",messageData);
         map.put("createTime",createTime);
         //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
-        directMessageSender.send(map);
+        directMessageSender.send(map, BaseConstants.Digital.ONE);
         return "ok";
     }
 
