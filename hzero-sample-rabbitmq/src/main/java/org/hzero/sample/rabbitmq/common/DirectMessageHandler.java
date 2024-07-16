@@ -1,4 +1,4 @@
-package org.hzero.sample.rabbitmq.app.service;
+package org.hzero.sample.rabbitmq.common;
 
 import com.rabbitmq.client.Channel;
 import lombok.NoArgsConstructor;

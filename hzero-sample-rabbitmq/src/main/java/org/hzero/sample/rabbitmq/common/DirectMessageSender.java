@@ -1,4 +1,4 @@
-package org.hzero.sample.rabbitmq.app.service;
+package org.hzero.sample.rabbitmq.common;
 
 import org.hzero.sample.rabbitmq.config.MsgConstants;
 import org.hzero.sample.rabbitmq.common.AbstractMessageSender;

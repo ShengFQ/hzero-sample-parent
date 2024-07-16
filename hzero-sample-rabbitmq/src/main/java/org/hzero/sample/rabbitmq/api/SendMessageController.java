@@ -1,8 +1,7 @@
 package org.hzero.sample.rabbitmq.api;
 
-import io.choerodon.swagger.annotation.Permission;
 import org.hzero.core.base.BaseConstants;
-import org.hzero.sample.rabbitmq.app.service.DirectMessageSender;
+import org.hzero.sample.rabbitmq.common.DirectMessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
