@@ -1,8 +1,13 @@
 package org.hzero.sample.lock.service.impl;
 
+import org.hzero.sample.lock.service.AbsValidator;
 import org.hzero.sample.lock.service.Validator;
+import org.springframework.stereotype.Component;
 
-public class LengthValidator implements Validator {
+/**
+ * 传统java原生责任链
+ * */
+public class LengthValidator extends AbsValidator {
     private int min;
     private int max;
     private Validator next;

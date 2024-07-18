@@ -1,8 +1,13 @@
 package org.hzero.sample.lock.service.impl;
 
+import org.hzero.sample.lock.service.AbsValidator;
 import org.hzero.sample.lock.service.Validator;
+import org.springframework.stereotype.Component;
 
-public class NotNullValidator implements Validator {
+/**
+ * 传统java原生责任链
+ * */
+public class NotNullValidator extends AbsValidator {
     private Validator next;
 
     @Override

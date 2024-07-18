@@ -17,23 +17,4 @@ public class HzeroSampleLockApplication {
     }
 
 
-    @Bean
-    public ValidationService validationService() {
-        ValidationService service = new ValidationService();
-        NotNullValidator notNullValidator = new NotNullValidator();
-        LengthValidator lengthValidator = new LengthValidator(5, 10);
-
-        notNullValidator.setNext(lengthValidator);
-        service.setValidatorChain(notNullValidator);
-        return service;
-    }
-
-    @PostConstruct
-    public void testValidationService() {
-        ValidationService service = validationService();
-        boolean isValid = service.validate("test"); // This will pass
-        isValid = service.validate(""); // This will fail due to NotNullValidator
-        isValid = service.validate("thisisaverylongstringthatdoesnotfitthelengthrequirement"); // This will fail due to LengthValidator
-    }
-
 }
