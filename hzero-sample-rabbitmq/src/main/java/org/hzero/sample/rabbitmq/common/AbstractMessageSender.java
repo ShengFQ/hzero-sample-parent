@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.hzero.core.util.UUIDUtils;
 import org.hzero.sample.rabbitmq.config.MsgConstants;
 import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +65,32 @@ public abstract class AbstractMessageSender implements MessageSender {
         // 准备消息实体
         String orderJsonStr = JSONUtil.toJsonStr(object);
 
+        /*MessagePostProcessor messagePostProcessor = message -> {
+            message.getMessageProperties().setHeader("retry-times", 0);
+            return message;
+        };*/
         MessagePostProcessor messagePostProcessor = message -> {
             message.getMessageProperties().setHeader("retry-times", 0);
+            message.getMessageProperties().setContentType(MessageProperties.CONTENT_TYPE_JSON);
+            message.getMessageProperties().setCorrelationId(correlationData.getId());
+            // 本应用内会需要用户信息 则进行设置
+                // 设置用户会话信息进入抬头
+                Optional.ofNullable(DetailsHelper.getUserDetails()).ifPresent(userDetails -> {
+                    JSONObject userInfo = new JSONObject();
+                    userInfo.set("userId", userDetails.getUserId());
+                    userInfo.set("tenantId", userDetails.getTenantId());
+                    userInfo.set("username", userDetails.getUsername());
+                    userInfo.set("realName", userDetails.getRealName());
+                    userInfo.set("organizationId", userDetails.getOrganizationId());
+                    userInfo.set("language", userDetails.getLanguage());
+                    userInfo.set("additionInfo", userDetails.getAdditionInfo());
+                    log.trace("交换机：{}路由键：{}->消息头设置用户信息成功：{}", exchangeName, routingKey, userInfo);
+                    message.getMessageProperties().setHeader(MsgConstants.USER_DETAILS_KEY, userInfo.toString());
+                });
             return message;
         };
         rabbitTemplate.convertAndSend(exchangeName, routingKey, orderJsonStr, messagePostProcessor, correlationData);
-
+        log.trace("发送消息成功 exchage:{} routingkey:{} message:{}",exchangeName,routingKey,orderJsonStr);
     }
 
     /**
@@ -129,18 +150,6 @@ public abstract class AbstractMessageSender implements MessageSender {
                     log.trace("交换机：{}路由键：{}->消息头设置用户信息成功：{}", exchangeName, routingKey, userInfo);
                     message.getMessageProperties().setHeader(MsgConstants.USER_DETAILS_KEY, userInfo.toString());
                 });
-            }
-
-            // 设置过期时间
-            if (Objects.nonNull(time)) {
-                int timeMs = time * 1000;
-                if (delay) {
-                    message.getMessageProperties().setDelay(timeMs);
-                    log.debug("DELAY Set:交换机：{}路由键：{}->消息设置延迟时间成功：{}s", exchangeName, routingKey, time);
-                } else {
-                    message.getMessageProperties().setExpiration(String.valueOf(timeMs));
-                    log.debug("TTL Set:交换机：{}路由键：{}->消息设置过期时间成功：{}s", exchangeName, routingKey, time);
-                }
             }
             return message;
         };

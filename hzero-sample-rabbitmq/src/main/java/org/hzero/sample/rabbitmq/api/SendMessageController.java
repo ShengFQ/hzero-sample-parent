@@ -2,6 +2,7 @@ package org.hzero.sample.rabbitmq.api;
 
 import org.hzero.core.base.BaseConstants;
 import org.hzero.sample.rabbitmq.common.DirectMessageSender;
+import org.hzero.sample.rabbitmq.domain.DirectMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import java.util.UUID;
  **/
 
 @RestController("sendMessageController.v2")
-@RequestMapping("/v2/rabbitmq")
+@RequestMapping("/v2")
 @SuppressWarnings("all")
 public class SendMessageController {
 
@@ -32,12 +33,12 @@ public class SendMessageController {
         String messageId = String.valueOf(UUID.randomUUID());
         String messageData = "test message, hello!";
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<String,Object> map=new HashMap<>();
-        map.put("messageId",messageId);
-        map.put("messageData",messageData);
-        map.put("createTime",createTime);
+        DirectMessage message=new DirectMessage();
+        message.setMessageId(messageId);
+        message.setMessageData(messageData);
+        message.setCreateTime(createTime);
         //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
-        directMessageSender.send(map, BaseConstants.Digital.ONE);
+        directMessageSender.send(message);
         return "ok";
     }
 

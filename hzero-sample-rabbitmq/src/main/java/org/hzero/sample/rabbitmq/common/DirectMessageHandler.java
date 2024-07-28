@@ -1,5 +1,7 @@
 package org.hzero.sample.rabbitmq.common;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +37,7 @@ public class DirectMessageHandler extends AbstractMessageHandler {
     @RabbitHandler
     public void onMessage(Message message, Map<String, Object> headers, Channel channel) {
         log.debug("DirectReceiver消费者收到消息  : " + message.toString());
-        handleWithUser(message,headers,channel,(s)->{onBusiness(message);});
+        handleMessage(message,headers,channel,(s)->{onBusiness(message);});
     }
 
     private void onBusiness(Message message){
